@@ -22,3 +22,23 @@ mongoose
   })
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.error(err));
+
+const path = require("path");
+
+// Раздача статических файлов (если на продакшене)
+if (process.env.NODE_ENV === "production") {
+  app.use(
+    express.static(path.join(__dirname, "../social-network-frontend/build"))
+  );
+
+  app.get("*", (req, res) => {
+    res.sendFile(
+      path.resolve(
+        __dirname,
+        "../social-network-frontend",
+        "build",
+        "index.html"
+      )
+    );
+  });
+}
